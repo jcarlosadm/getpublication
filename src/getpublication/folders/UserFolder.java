@@ -1,4 +1,4 @@
-package getpublication.userfolder;
+package getpublication.folders;
 
 import java.io.File;
 
@@ -50,10 +50,5 @@ public class UserFolder {
     
     public static String getPathToCacheFolder(){
         return (getPathToMainFolder() + File.separator + CACHE_FOLDER);
-    }
-
-    public static void main(String[] args) {
-        UserFolder userFolder = new UserFolder();
-        userFolder.createFolders();
     }
 }

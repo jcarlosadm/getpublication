@@ -1,4 +1,4 @@
-package tests.userfolder;
+package tests.folders;
 
 import static org.junit.Assert.*;
 
@@ -6,7 +6,7 @@ import java.io.File;
 
 import org.junit.Test;
 
-import getpublication.userfolder.UserFolder;
+import getpublication.folders.UserFolder;
 
 public class UserFolderTest {
 
