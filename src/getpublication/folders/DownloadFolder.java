@@ -4,7 +4,7 @@ import java.io.File;
 
 public class DownloadFolder {
     private String pathToDownloadFolder = System.getProperty("user.home")
-            + File.separator + "Download";
+            + File.separator + "Downloads";
 
     public String getPathToDownloadFolder() {
         return this.pathToDownloadFolder;
