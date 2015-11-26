@@ -2,3 +2,7 @@
 /libs/
 .classpath
 .project
+
+*.so
+*.dll
+*.dylib
