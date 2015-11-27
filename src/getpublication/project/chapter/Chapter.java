@@ -17,7 +17,7 @@ import getpublication.util.Downloader;
 public abstract class Chapter {
     private List<String> urlStringList = new ArrayList<>();
 
-    private String name;
+    protected String name;
 
     public Chapter(String name) {
         this.name = name;
@@ -92,8 +92,6 @@ public abstract class Chapter {
         return true;
     }
 
-    
-
     private void convertImageFiles(List<String> fileList) {
         for (int index = 0; index < fileList.size(); index++) {
             String filename = (String) fileList.get(index);
@@ -123,7 +121,7 @@ public abstract class Chapter {
             return;
         }
 
-        File destFile = new File(downloadFolder + File.separator
+        File destFile = new File(downloadFolder.getPathToDownloadFolder() + File.separator
                 + FilenameUtils.getName(joinedFilename));
         try {
             FileUtils.moveFile(srcFile, destFile);
@@ -137,8 +135,8 @@ public abstract class Chapter {
     private void deleteTempFiles(List<String> fileList) {
         for (String filename : fileList) {
             (new File(filename)).delete();
-            System.out.println("All temp files deleted");
         }
+        System.out.println("All temp files deleted");
     }
     
     protected abstract void fixUrl(Downloader downloader);
