@@ -92,7 +92,7 @@ public abstract class Chapter {
         return true;
     }
 
-    protected abstract void fixUrl(Downloader downloader);
+    
 
     private void convertImageFiles(List<String> fileList) {
         for (int index = 0; index < fileList.size(); index++) {
@@ -115,8 +115,6 @@ public abstract class Chapter {
             }
         }
     }
-
-    protected abstract String joinFiles(List<String> fileList);
 
     private void moveJoinedFileToDownloadFolder(String joinedFilename,
             DownloadFolder downloadFolder) {
@@ -142,4 +140,8 @@ public abstract class Chapter {
             System.out.println("All temp files deleted");
         }
     }
+    
+    protected abstract void fixUrl(Downloader downloader);
+    
+    protected abstract String joinFiles(List<String> fileList);
 }
