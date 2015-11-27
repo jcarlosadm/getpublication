@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
-import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
 import getpublication.project.chapter.Chapter;
 import getpublication.util.Downloader;
@@ -74,7 +73,8 @@ public class MangahostChapter extends Chapter {
         return path;
     }
     
-    public static void main(String[] args) {
+    /* TODO remove
+     * public static void main(String[] args) {
         MangahostChapter mangahostChapter = new MangahostChapter("fairy tail 442");
         
         mangahostChapter.addUrlString(
@@ -83,6 +83,6 @@ public class MangahostChapter extends Chapter {
                 "http://img.mangahost.com/br/images/fairy-tail-br/442/442_04png.png.webp");
         
         mangahostChapter.download(new DownloadFolder());
-    }
+    }*/
 
 }
