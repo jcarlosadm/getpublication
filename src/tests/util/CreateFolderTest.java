@@ -6,7 +6,7 @@ import java.io.File;
 
 import org.junit.Test;
 
-import getpublication.util.CreateFolder;
+import getpublication.util.folder.CreateFolder;
 
 public class CreateFolderTest {
 

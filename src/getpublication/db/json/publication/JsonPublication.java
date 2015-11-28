@@ -1,4 +1,4 @@
-package getpublication.db.json;
+package getpublication.db.json.publication;
 
 import java.util.Set;
 
@@ -8,16 +8,6 @@ public interface JsonPublication {
      * @return path to json file
      */
     public String getDbPathAndName();
-    
-    /**
-     * Load json file (if exists)
-     */
-    public void load();
-    
-    /**
-     * Save json file
-     */
-    public void save();
     
     /**
      * @param projectName project to add

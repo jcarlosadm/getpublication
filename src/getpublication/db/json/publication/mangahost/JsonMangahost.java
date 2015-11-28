@@ -1,29 +1,23 @@
-package getpublication.db.json.mangahost;
+package getpublication.db.json.publication.mangahost;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import getpublication.db.json.JsonPublication;
-import getpublication.db.json.PropertiesName;
+import getpublication.db.json.JsonBaseOperations;
+import getpublication.db.json.publication.JsonPublication;
+import getpublication.db.json.publication.PropertiesName;
 import getpublication.folders.UserFolder;
-import getpublication.util.CreateFolder;
+import getpublication.util.folder.CreateFolder;
 
-public class JsonMangahost implements JsonPublication {
+public class JsonMangahost extends JsonBaseOperations implements JsonPublication {
 
     private static final String FOLDER = UserFolder.getPathToDbFolder()
             + File.separator + "mangahost";
 
     private static final String DB_PATH_AND_NAME = FOLDER + File.separator
             + "mangahost.json";
-
-    private JSONObject jsonObject = new JSONObject();
 
     public JsonMangahost() {
         CreateFolder.create(new File(FOLDER));
@@ -34,34 +28,10 @@ public class JsonMangahost implements JsonPublication {
         return DB_PATH_AND_NAME;
     }
 
-    @Override
-    public void load() {
-        File file = new File(DB_PATH_AND_NAME);
-        if (file.exists()) {
-            JSONParser parser = new JSONParser();
-            try {
-                this.jsonObject = (JSONObject) parser
-                        .parse(new FileReader(file));
-            } catch (IOException | ParseException e) {
-                System.out.println("error to open json file");
-            }
-        }
-    }
-
-    @Override
-    public void save() {
-        try {
-            FileUtils.writeStringToFile(new File(DB_PATH_AND_NAME),
-                    this.jsonObject.toJSONString());
-        } catch (IOException e) {
-            System.out.println("Error to save json file");
-        }
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public void addProject(String projectName) {
-        this.jsonObject.put(projectName, new JSONObject());
+        this.getJsonObject().put(projectName, new JSONObject());
     }
 
     @Override
@@ -70,7 +40,7 @@ public class JsonMangahost implements JsonPublication {
             return false;
         }
 
-        this.jsonObject.remove(projectName);
+        this.getJsonObject().remove(projectName);
         return true;
     }
 
@@ -78,7 +48,7 @@ public class JsonMangahost implements JsonPublication {
     @Override
     public void addProjectProperty(String projectName, PropertiesName propertyName,
             String propertyValue) {
-        JSONObject obj = (JSONObject) this.jsonObject.get(projectName);
+        JSONObject obj = (JSONObject) this.getJsonObject().get(projectName);
         obj.put(propertyName.toString(), propertyValue);
     }
 
@@ -89,7 +59,7 @@ public class JsonMangahost implements JsonPublication {
             return false;
         }
 
-        JSONObject obj = (JSONObject) this.jsonObject.get(projectName);
+        JSONObject obj = (JSONObject) this.getJsonObject().get(projectName);
         obj.remove(propertyName.toString());
         return true;
     }
@@ -99,13 +69,13 @@ public class JsonMangahost implements JsonPublication {
         if (!this.hasProjectProperty(projectName, propertyName)) {
             return "";
         }
-        JSONObject obj = (JSONObject) this.jsonObject.get(projectName);
+        JSONObject obj = (JSONObject) this.getJsonObject().get(projectName);
         return ((String) obj.get(propertyName.toString()));
     }
 
     @Override
     public boolean hasProject(String project) {
-        if (!this.jsonObject.containsKey(project)) {
+        if (!this.getJsonObject().containsKey(project)) {
             return false;
         }
         return true;
@@ -113,11 +83,11 @@ public class JsonMangahost implements JsonPublication {
 
     @Override
     public boolean hasProjectProperty(String project, PropertiesName property) {
-        if (!this.jsonObject.containsKey(project)) {
+        if (!this.getJsonObject().containsKey(project)) {
             return false;
         }
 
-        JSONObject obj = (JSONObject) this.jsonObject.get(project);
+        JSONObject obj = (JSONObject) this.getJsonObject().get(project);
 
         if (!obj.containsKey(property.toString())) {
             return false;
@@ -128,7 +98,12 @@ public class JsonMangahost implements JsonPublication {
 
     @Override
     public Set<?> getProjects() {
-        return this.jsonObject.keySet();
+        return this.getJsonObject().keySet();
+    }
+
+    @Override
+    protected String getJsonPath() {
+        return DB_PATH_AND_NAME;
     }
 
 }

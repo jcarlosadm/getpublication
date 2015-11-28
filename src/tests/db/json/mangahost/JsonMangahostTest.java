@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import getpublication.db.json.JsonPublication;
-import getpublication.db.json.PropertiesName;
-import getpublication.db.json.mangahost.JsonMangahost;
+import getpublication.db.json.publication.JsonPublication;
+import getpublication.db.json.publication.PropertiesName;
+import getpublication.db.json.publication.mangahost.JsonMangahost;
 
 public class JsonMangahostTest {
 

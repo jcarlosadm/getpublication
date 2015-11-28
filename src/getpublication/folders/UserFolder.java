@@ -2,7 +2,7 @@ package getpublication.folders;
 
 import java.io.File;
 
-import getpublication.util.CreateFolder;
+import getpublication.util.folder.CreateFolder;
 
 public class UserFolder {
 

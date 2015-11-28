@@ -1,4 +1,4 @@
-package getpublication.db.json;
+package getpublication.db.json.publication;
 
 public enum PropertiesName {
 

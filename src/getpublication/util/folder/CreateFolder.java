@@ -1,4 +1,4 @@
-package getpublication.util;
+package getpublication.util.folder;
 
 import java.io.File;
 
