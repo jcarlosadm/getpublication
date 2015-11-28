@@ -18,7 +18,6 @@ public class DownloadFolderChooserCommand implements Command {
             jsonConfig.save();
             DownloadFolder downloadFolder = context.getDownloadFolder();
             downloadFolder.setPathToDownloadFolder(path);
-            context.setDownloadFolder(downloadFolder);
         }
     }
 }
