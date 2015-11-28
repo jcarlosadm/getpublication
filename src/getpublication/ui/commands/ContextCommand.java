@@ -7,7 +7,7 @@ public class ContextCommand {
     private DownloadFolder downloadFolder = new DownloadFolder();
     
     private JsonPublication jsonPublication = null;
-    
+
     public void setDownloadFolder(DownloadFolder downloadFolder){
         this.downloadFolder = downloadFolder;
     }

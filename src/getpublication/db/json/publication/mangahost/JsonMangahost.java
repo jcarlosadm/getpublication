@@ -96,8 +96,9 @@ public class JsonMangahost extends JsonBasicOperations implements JsonPublicatio
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Set<?> getProjects() {
+    public Set<String> getProjects() {
         return this.getJsonObject().keySet();
     }
 

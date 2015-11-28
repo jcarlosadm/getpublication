@@ -63,5 +63,5 @@ public interface JsonPublication {
     /**
      * @return set of all projects
      */
-    public Set<?> getProjects();
+    public Set<String> getProjects();
 }

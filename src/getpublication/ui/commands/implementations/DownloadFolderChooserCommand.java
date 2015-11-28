@@ -23,4 +23,9 @@ public class DownloadFolderChooserCommand implements Command {
             System.out.println("folder chooser operation canceled");
         }
     }
+
+    @Override
+    public String getCommandName() {
+        return "set download folder";
+    }
 }
