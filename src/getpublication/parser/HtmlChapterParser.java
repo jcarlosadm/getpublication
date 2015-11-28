@@ -34,7 +34,7 @@ public abstract class HtmlChapterParser {
         try {
             this.doc = Jsoup.connect(this.urlSiteString).get();
         } catch (IOException e) {
-            System.out.println("unable to connect");
+            System.out.println("unable to connect to "+this.urlSiteString);
             this.doc = null;
             return false;
         }
@@ -56,6 +56,10 @@ public abstract class HtmlChapterParser {
         }
 
         return this.parseAndGetUrlStrings(this.doc, this.anonymousMode);
+    }
+    
+    public String getUrlSiteString(){
+        return this.urlSiteString;
     }
 
     protected abstract String parseAndGetTitle(Document doc);
