@@ -23,8 +23,8 @@ public abstract class Chapter {
         this.name = name;
     }
 
-    public void addUrlString(String urlString) {
-        this.urlStringList.add(urlString);
+    public void addUrlStringList(List<String> urlStringList) {
+        this.urlStringList = urlStringList;
     }
 
     public void download(DownloadFolder downloadFolder) {
