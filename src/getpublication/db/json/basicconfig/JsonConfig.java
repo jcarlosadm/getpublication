@@ -2,11 +2,11 @@ package getpublication.db.json.basicconfig;
 
 import java.io.File;
 
-import getpublication.db.json.JsonBaseOperations;
+import getpublication.db.json.JsonBasicOperations;
 import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
 
-public class JsonConfig extends JsonBaseOperations {
+public class JsonConfig extends JsonBasicOperations {
 
     private static final String DB_PATH_AND_NAME = UserFolder
             .getPathToDbFolder() + File.separator + "config.json";

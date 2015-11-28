@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public abstract class JsonBaseOperations {
+public abstract class JsonBasicOperations {
 
     private JSONObject jsonObject = new JSONObject();
     

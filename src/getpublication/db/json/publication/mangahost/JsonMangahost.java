@@ -5,13 +5,13 @@ import java.util.Set;
 
 import org.json.simple.JSONObject;
 
-import getpublication.db.json.JsonBaseOperations;
+import getpublication.db.json.JsonBasicOperations;
 import getpublication.db.json.publication.JsonPublication;
 import getpublication.db.json.publication.PropertiesName;
 import getpublication.folders.UserFolder;
 import getpublication.util.folder.CreateFolder;
 
-public class JsonMangahost extends JsonBaseOperations implements JsonPublication {
+public class JsonMangahost extends JsonBasicOperations implements JsonPublication {
 
     private static final String FOLDER = UserFolder.getPathToDbFolder()
             + File.separator + "mangahost";
