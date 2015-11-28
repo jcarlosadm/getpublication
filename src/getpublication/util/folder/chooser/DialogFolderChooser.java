@@ -1,5 +1,7 @@
 package getpublication.util.folder.chooser;
 
+import java.io.File;
+
 import javax.swing.JFileChooser;
 
 public class DialogFolderChooser {
@@ -8,6 +10,11 @@ public class DialogFolderChooser {
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fileChooser.showSaveDialog(null);
         
-        return fileChooser.getSelectedFile().getPath();
+        File file = fileChooser.getSelectedFile();
+        if (file == null) {
+            return "";
+        }
+        
+        return file.getPath();
     }
 }
