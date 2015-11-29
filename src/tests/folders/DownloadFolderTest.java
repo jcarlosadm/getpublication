@@ -17,9 +17,9 @@ public class DownloadFolderTest {
     public void testSetPathToDownloadFolder() {
         DownloadFolder downloadFolder = new DownloadFolder();
 
-        downloadFolder.setPathToDownloadFolder(PATH_TO_DOWNLOAD_FOLDER);
+        downloadFolder.setPath(PATH_TO_DOWNLOAD_FOLDER);
         assertEquals(PATH_TO_DOWNLOAD_FOLDER,
-                downloadFolder.getPathToDownloadFolder());
+                downloadFolder.getPath());
     }
 
 }

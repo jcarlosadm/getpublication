@@ -14,10 +14,10 @@ public class DownloadFolderChooserCommand implements Command {
         if (path != null && !path.equals("")) {
             JsonConfig jsonConfig = new JsonConfig();
             jsonConfig.load();
-            jsonConfig.setDownloadFolder(path);
+            jsonConfig.setPathToDownloadFolder(path);
             jsonConfig.save();
             DownloadFolder downloadFolder = context.getDownloadFolder();
-            downloadFolder.setPathToDownloadFolder(path);
+            downloadFolder.setPath(path);
             System.out.println("folder chooser successful operation!");
         } else {
             System.out.println("folder chooser operation canceled");

@@ -24,6 +24,9 @@ public class RemoveProjectCommand implements Command {
             jsonPublication.removeProject(selectedProject);
             
             ((JsonBasicOperations) jsonPublication).save();
+            if (context.getProject().getName().equals(selectedProject)) {
+                context.setProject(null);
+            }
             System.out.println("project "+selectedProject+" removed");
         } else {
             System.out.println("remove canceled");

@@ -121,7 +121,7 @@ public abstract class Chapter {
             return;
         }
 
-        File destFile = new File(downloadFolder.getPathToDownloadFolder() + File.separator
+        File destFile = new File(downloadFolder.getPath() + File.separator
                 + FilenameUtils.getName(joinedFilename));
         try {
             FileUtils.moveFile(srcFile, destFile);

@@ -15,6 +15,10 @@ public class StringChooser {
         this.stringList.add(string);
     }
     
+    public void setStringList(List<String> stringList){
+        this.stringList = stringList;
+    }
+    
     public void setTitle(String title){
         this.title = title;
     }

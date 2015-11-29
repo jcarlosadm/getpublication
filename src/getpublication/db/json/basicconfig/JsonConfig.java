@@ -17,17 +17,17 @@ public class JsonConfig extends JsonBasicOperations {
     }
 
     @SuppressWarnings("unchecked")
-    public void setDownloadFolder(String pathDowloadFolder) {
+    public void setPathToDownloadFolder(String pathToDowloadFolder) {
         this.getJsonObject().put(JsonConfigConstants.DOWNLOADFOLDER.toString(),
-                pathDowloadFolder);
+                pathToDowloadFolder);
     }
 
-    public String getDownloadFolder() {
+    public String getPathToDownloadFolder() {
         String path = ((String) this.getJsonObject()
                 .get(JsonConfigConstants.DOWNLOADFOLDER.toString()));
         if (path == null || path.equals("")) {
-            path = (new DownloadFolder()).getPathToDownloadFolder();
-            this.setDownloadFolder(path);
+            path = (new DownloadFolder()).getPath();
+            this.setPathToDownloadFolder(path);
         }
 
         return path;
