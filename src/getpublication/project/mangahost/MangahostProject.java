@@ -41,6 +41,17 @@ public class MangahostProject extends Project {
             }
         }
         
+        if (!chapterNameList.isEmpty()) {
+            return chapterNameList;
+        }
+        
+        elements = doc.getElementsByClass("capitulo");
+        for (Element element : elements) {
+            String href = element.attr("href");
+            String chapter = href.split("/")[href.split("/").length - 1];
+            chapterNameList.add(chapter);
+        }
+        
         return chapterNameList;
     }
 
