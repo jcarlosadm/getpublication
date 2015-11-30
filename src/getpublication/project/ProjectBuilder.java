@@ -1,8 +1,6 @@
 package getpublication.project;
 
-import getpublication.project.mangahost.MangahostProject;
-
-public class ProjectBuilder {
+public abstract class ProjectBuilder {
     
     private String name = "";
     
@@ -22,11 +20,9 @@ public class ProjectBuilder {
         this.anonymousMode = anonymousMode;
     }
     
-    public Project build(SiteName siteName){
-        if (siteName.equals(SiteName.MANGAHOST)) {
-            return new MangahostProject(this.name, this.urlPart, this.anonymousMode);
-        }
-        
-        return null;
+    public Project build(){
+        return this.getInstance(this.name, this.urlPart, this.anonymousMode);
     }
+    
+    protected abstract Project getInstance(String name, String urlPart, boolean anonymousMode);
 }

@@ -11,12 +11,18 @@ public class UserFolder {
     private static final String DB_FOLDER = "db";
     private static final String USER_HOME_LOCATION_PROPERTY = "user.home";
     private static final String MAIN_FOLDER = ".getpublications";
+    private static final String PLUGIN_FOLDER = "plugins";
 
     public void createFolders() {
         this.createMainFolder();
         this.createDBFolder();
         this.createTempFolder();
         this.createCacheFolder();
+        this.createPluginFolder();
+    }
+    
+    private void createPluginFolder(){
+        CreateFolder.create(new File(getPathToPluginFolder()));
     }
 
     private void createCacheFolder() {
@@ -50,5 +56,9 @@ public class UserFolder {
     
     public static String getPathToCacheFolder(){
         return (getPathToMainFolder() + File.separator + CACHE_FOLDER);
+    }
+    
+    public static String getPathToPluginFolder(){
+        return (getPathToMainFolder() + File.separator + PLUGIN_FOLDER);
     }
 }
