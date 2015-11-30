@@ -1,8 +1,10 @@
 package getpublication.project;
 
+import java.io.File;
 import java.util.List;
 
 import getpublication.folders.DownloadFolder;
+import getpublication.folders.UserFolder;
 import getpublication.parser.HtmlChapterParser;
 import getpublication.project.chapter.Chapter;
 
@@ -55,6 +57,19 @@ public abstract class Project {
         }
 
         String title = htmlChapterParser.getTitle();
+        File fileInTempFolder = new File(UserFolder.getPathToTempFolder()
+                + File.separator + title.replace(' ', '_')+".cbz");
+        if (fileInTempFolder.exists()) {
+            fileInTempFolder.delete();
+        }
+
+        File fileInDownloadFolder = new File(
+                folder.getPath() + File.separator + title.replace(' ', '_')+".cbz");
+        if (fileInDownloadFolder.exists()) {
+            System.out.println("chapter already exists");
+            return true;
+        }
+
         List<String> urlStrings = htmlChapterParser.getUrlStrings();
         if (urlStrings == null) {
             System.out.println(
