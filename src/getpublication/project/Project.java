@@ -1,10 +1,8 @@
 package getpublication.project;
 
-import java.io.File;
 import java.util.List;
 
 import getpublication.folders.DownloadFolder;
-import getpublication.folders.UserFolder;
 import getpublication.parser.HtmlChapterParser;
 import getpublication.project.chapter.Chapter;
 
@@ -57,15 +55,8 @@ public abstract class Project {
         }
 
         String title = htmlChapterParser.getTitle();
-        File fileInTempFolder = new File(UserFolder.getPathToTempFolder()
-                + File.separator + title.replace(' ', '_')+".cbz");
-        if (fileInTempFolder.exists()) {
-            fileInTempFolder.delete();
-        }
-
-        File fileInDownloadFolder = new File(
-                folder.getPath() + File.separator + title.replace(' ', '_')+".cbz");
-        if (fileInDownloadFolder.exists()) {
+        this.checkFileInTempFolder(title);
+        if (this.checkFileInDownloadFolder(folder, title)) {
             System.out.println("chapter already exists");
             return true;
         }
@@ -83,6 +74,11 @@ public abstract class Project {
 
         return true;
     }
+
+    protected abstract boolean checkFileInDownloadFolder(DownloadFolder folder,
+            String title);
+
+    protected abstract void checkFileInTempFolder(String title);
 
     private void checkChapterNameListExists() {
         if (this.chapterNames == null) {
