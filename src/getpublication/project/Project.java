@@ -75,10 +75,7 @@ public abstract class Project {
         return true;
     }
 
-    protected abstract boolean checkFileInDownloadFolder(DownloadFolder folder,
-            String title);
-
-    protected abstract void checkFileInTempFolder(String title);
+    
 
     private void checkChapterNameListExists() {
         if (this.chapterNames == null) {
@@ -93,4 +90,9 @@ public abstract class Project {
     protected abstract Chapter getChapterGenerator(String title);
 
     protected abstract HtmlChapterParser getHtmlParser(String chapterName);
+    
+    protected abstract boolean checkFileInDownloadFolder(DownloadFolder folder,
+            String title);
+
+    protected abstract void checkFileInTempFolder(String title);
 }
