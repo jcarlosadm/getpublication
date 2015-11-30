@@ -72,19 +72,4 @@ public class MangahostChapterParser extends HtmlChapterParser {
         
         return urlStrings;
     }
-    
-    /* TODO remove
-     * public static void main(String[] args) {
-        MangahostChapterParser mParser = new MangahostChapterParser
-                ("http://br.mangahost.com/manga/fairy-tail-br/442", false);
-        
-        System.out.println(mParser.getTitle());
-        
-        List<String> urlStrings = mParser.getUrlStrings();
-        if (urlStrings != null) {
-            for (String urlString : urlStrings) {
-                System.out.println(urlString);
-            }
-        }
-    }*/
 }

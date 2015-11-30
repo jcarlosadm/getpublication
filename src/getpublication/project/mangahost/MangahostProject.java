@@ -75,14 +75,4 @@ public class MangahostProject extends Project {
     protected Chapter getChapterGenerator(String title) {
         return new MangahostChapter(title);
     }
-    
-    
-    /* TODO remove
-     * public static void main(String[] args) {
-        MangahostProject mProject = new MangahostProject("bleach", "bleach-br", false);
-        if (mProject.downloadChapter("654", new DownloadFolder())) {
-            System.out.println("yeah!");
-        }
-    }*/
-
 }

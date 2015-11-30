@@ -72,17 +72,4 @@ public class MangahostChapter extends Chapter {
 
         return path;
     }
-    
-    /* TODO remove
-     * public static void main(String[] args) {
-        MangahostChapter mangahostChapter = new MangahostChapter("fairy tail 442");
-        
-        mangahostChapter.addUrlString(
-                "http://img.mangahost.com/br/images/fairy-tail-br/442/442_02png.png.webp");
-        mangahostChapter.addUrlString(
-                "http://img.mangahost.com/br/images/fairy-tail-br/442/442_04png.png.webp");
-        
-        mangahostChapter.download(new DownloadFolder());
-    }*/
-
 }
