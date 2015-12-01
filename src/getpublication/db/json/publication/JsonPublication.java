@@ -5,11 +5,6 @@ import java.util.Set;
 public interface JsonPublication {
     
     /**
-     * @return path to json file
-     */
-    public String getDbPathAndName();
-    
-    /**
      * @param projectName project to add
      */
     public void addProject(String projectName);
