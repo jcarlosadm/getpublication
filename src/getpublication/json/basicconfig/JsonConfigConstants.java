@@ -1,4 +1,4 @@
-package getpublication.db.json.basicconfig;
+package getpublication.json.basicconfig;
 
 public enum JsonConfigConstants {
     

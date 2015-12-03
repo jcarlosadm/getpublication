@@ -1,13 +1,26 @@
-package getpublication.db.json.publication;
+package getpublication.json.publication;
 
+import java.io.File;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
 
-import getpublication.db.json.JsonBasicOperations;
+import getpublication.json.JsonBasicOperations;
+import getpublication.util.folder.CreateFolder;
 
 public abstract class JsonPublication extends JsonBasicOperations {
     
+    /**
+     * Constructor
+     * @param folderName folder to create
+     */
+    public JsonPublication() {
+        String folderName = this.getFolderPath();
+        if (folderName != null && !folderName.equals("")) {
+            CreateFolder.create(new File(folderName));
+        }
+    }
+
     /**
      * @param projectName project to add
      */
@@ -116,4 +129,9 @@ public abstract class JsonPublication extends JsonBasicOperations {
     public Set<String> getProjects(){
         return this.getJsonObject().keySet();
     }
+    
+    /**
+     * @return path to folder of the json file
+     */
+    protected abstract String getFolderPath();
 }

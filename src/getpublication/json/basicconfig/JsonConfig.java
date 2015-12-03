@@ -1,10 +1,10 @@
-package getpublication.db.json.basicconfig;
+package getpublication.json.basicconfig;
 
 import java.io.File;
 
-import getpublication.db.json.JsonBasicOperations;
 import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
+import getpublication.json.JsonBasicOperations;
 
 public class JsonConfig extends JsonBasicOperations {
 

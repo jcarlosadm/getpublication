@@ -1,4 +1,4 @@
-package getpublication.db.json;
+package getpublication.json;
 
 import java.io.File;
 import java.io.FileReader;
