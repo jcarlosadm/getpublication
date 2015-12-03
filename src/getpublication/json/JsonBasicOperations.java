@@ -13,7 +13,7 @@ public abstract class JsonBasicOperations {
 
     private JSONObject jsonObject = new JSONObject();
     
-    public JSONObject getJsonObject(){
+    protected JSONObject getJsonObject(){
         return this.jsonObject;
     }
     

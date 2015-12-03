@@ -1,8 +1,10 @@
 package getpublication.project;
 
+import java.io.File;
 import java.util.List;
 
 import getpublication.folders.DownloadFolder;
+import getpublication.folders.UserFolder;
 import getpublication.parser.HtmlChapterParser;
 import getpublication.project.chapter.Chapter;
 
@@ -37,7 +39,7 @@ public abstract class Project {
     public boolean chapterExists(String chapter) {
         this.checkChapterNameListExists();
 
-        return this.chapterNames.contains(chapter);
+        return (this.chapterNames == null ? false : this.chapterNames.contains(chapter));
     }
 
     public List<String> getAllChapterNames() {
@@ -55,8 +57,11 @@ public abstract class Project {
         }
 
         String title = htmlChapterParser.getTitle();
-        this.checkFileInTempFolder(title);
-        if (this.checkFileInDownloadFolder(folder, title)) {
+        Chapter chapter = this.getChapterGenerator(title);
+        String finalFileName = chapter.getFinalFileName();
+        
+        this.checkFileInTempFolder(finalFileName);
+        if (this.checkFileInDownloadFolder(folder, finalFileName)) {
             System.out.println("chapter already exists");
             return true;
         }
@@ -68,18 +73,35 @@ public abstract class Project {
             return false;
         }
 
-        Chapter chapter = this.getChapterGenerator(title);
+        
         chapter.addUrlStringList(urlStrings);
         chapter.download(folder);
 
         return true;
     }
-
     
-
     private void checkChapterNameListExists() {
         if (this.chapterNames == null) {
             this.chapterNames = this.generateAllChapterNames();
+        }
+    }
+    
+    private boolean checkFileInDownloadFolder(DownloadFolder folder,
+            String title){
+        File file = new File(folder.getPath() + File.separator
+                + title);
+        if (file.exists()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void checkFileInTempFolder(String title){
+        File file = new File(UserFolder.getPathToTempFolder() + File.separator
+                + title);
+        if (file.exists()) {
+            file.delete();
         }
     }
 
@@ -90,9 +112,4 @@ public abstract class Project {
     protected abstract Chapter getChapterGenerator(String title);
 
     protected abstract HtmlChapterParser getHtmlParser(String chapterName);
-    
-    protected abstract boolean checkFileInDownloadFolder(DownloadFolder folder,
-            String title);
-
-    protected abstract void checkFileInTempFolder(String title);
 }

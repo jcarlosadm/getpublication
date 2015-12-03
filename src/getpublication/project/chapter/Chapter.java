@@ -11,10 +11,16 @@ import org.apache.commons.io.FilenameUtils;
 
 import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
+import getpublication.json.publication.JsonPublication;
 import getpublication.util.ConvertImage;
 import getpublication.util.Downloader;
+import getpublication.util.joinfiles.JoinFiles;
+import getpublication.util.joinfiles.JoinToCbz;
+import getpublication.util.joinfiles.JoinToPdf;
 
 public abstract class Chapter {
+    private static final String DEFAULT_EXTENSION = "cbz";
+
     private List<String> urlStringList = new ArrayList<>();
 
     protected String name;
@@ -126,7 +132,7 @@ public abstract class Chapter {
         try {
             FileUtils.moveFile(srcFile, destFile);
             System.out.println("File " + FilenameUtils.getName(joinedFilename)
-                    + " moved to download");
+                    + " moved to download folder: "+ downloadFolder.getPath());
         } catch (IOException e) {
             System.out.println("error to move joined file");
         }
@@ -139,7 +145,40 @@ public abstract class Chapter {
         System.out.println("All temp files deleted");
     }
     
+    public String getFinalFileName(){
+        JsonPublication jPublication = this.getJsonPublication();
+        jPublication.load();
+        String extension = jPublication.getPublicationExtension();
+        if (extension == null || extension.equals("")) {
+            extension = DEFAULT_EXTENSION;
+        }
+
+        return (this.name.replace(' ', '_') + "." + extension);
+    }
+    
+    private String joinFiles(List<String> fileList){
+        JsonPublication jsonPublication = this.getJsonPublication();
+        jsonPublication.load();
+        String extension = jsonPublication.getPublicationExtension();
+        if (extension == null || extension.equals("")) {
+            extension = DEFAULT_EXTENSION;
+        }
+        
+        JoinFiles joinFiles = null;
+        if (extension.equals("pdf")) {
+            joinFiles = new JoinToPdf();
+        } else {
+            joinFiles = new JoinToCbz();
+        }
+        
+        if (joinFiles.join(fileList, this.getFinalFileName()) == true) {
+            return this.getFinalFileName();
+        }
+        
+        return "";
+    }
+    
     protected abstract void fixUrl(Downloader downloader);
     
-    protected abstract String joinFiles(List<String> fileList);
+    protected abstract JsonPublication getJsonPublication();
 }

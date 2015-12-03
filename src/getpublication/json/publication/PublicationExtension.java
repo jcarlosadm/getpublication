@@ -1,17 +1,16 @@
 package getpublication.json.publication;
 
-public enum PropertiesName {
-
-    NAME_IN_URL {
+public enum PublicationExtension {
+    PDF {
         @Override
         public String toString() {
-            return "nameInUrl";
+            return "pdf";
         }
     },
-    PUBLICATION_EXTENSION {
+    CBZ {
         @Override
         public String toString() {
-            return "publicationExtension";
+            return "cbz";
         }
     };
     

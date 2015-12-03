@@ -9,10 +9,12 @@ import getpublication.json.JsonBasicOperations;
 import getpublication.util.folder.CreateFolder;
 
 public abstract class JsonPublication extends JsonBasicOperations {
-    
+
     /**
      * Constructor
-     * @param folderName folder to create
+     * 
+     * @param folderName
+     *            folder to create
      */
     public JsonPublication() {
         String folderName = this.getFolderPath();
@@ -22,20 +24,22 @@ public abstract class JsonPublication extends JsonBasicOperations {
     }
 
     /**
-     * @param projectName project to add
+     * @param projectName
+     *            project to add
      */
     @SuppressWarnings("unchecked")
-    public void addProject(String projectName){
+    public void addProject(String projectName) {
         if (!this.hasProject(projectName)) {
             this.getJsonObject().put(projectName, new JSONObject());
         }
     }
-    
+
     /**
-     * @param projectName project to remove
+     * @param projectName
+     *            project to remove
      * @return true if success
      */
-    public boolean removeProject(String projectName){
+    public boolean removeProject(String projectName) {
         if (!this.hasProject(projectName)) {
             return false;
         }
@@ -43,30 +47,38 @@ public abstract class JsonPublication extends JsonBasicOperations {
         this.getJsonObject().remove(projectName);
         return true;
     }
-    
+
     /**
      * add project property
-     * @param projectName project name
-     * @param propertyName property name
-     * @param propertyValue property value
+     * 
+     * @param projectName
+     *            project name
+     * @param propertyName
+     *            property name
+     * @param propertyValue
+     *            property value
      */
     @SuppressWarnings("unchecked")
-    public void addProjectProperty(String projectName, PropertiesName propertyName,
-            String propertyValue){
+    public void addProjectProperty(String projectName,
+            PropertiesName propertyName, String propertyValue) {
         if (!this.hasProject(projectName)) {
             return;
         }
         JSONObject obj = (JSONObject) this.getJsonObject().get(projectName);
         obj.put(propertyName.toString(), propertyValue);
     }
-    
+
     /**
      * remove project property
-     * @param projectName project name
-     * @param propertyName property name
+     * 
+     * @param projectName
+     *            project name
+     * @param propertyName
+     *            property name
      * @return true if success
      */
-    public boolean removeProjectProperty(String projectName, PropertiesName propertyName){
+    public boolean removeProjectProperty(String projectName,
+            PropertiesName propertyName) {
         if (!this.hasProjectProperty(projectName, propertyName)) {
             return false;
         }
@@ -75,40 +87,49 @@ public abstract class JsonPublication extends JsonBasicOperations {
         obj.remove(propertyName.toString());
         return true;
     }
-    
+
     /**
      * get project property
-     * @param projectName project name
-     * @param propertyName property name
+     * 
+     * @param projectName
+     *            project name
+     * @param propertyName
+     *            property name
      * @return value of project property
      */
-    public String getProjectProperty(String projectName, PropertiesName propertyName){
+    public String getProjectProperty(String projectName,
+            PropertiesName propertyName) {
         if (!this.hasProjectProperty(projectName, propertyName)) {
             return "";
         }
         JSONObject obj = (JSONObject) this.getJsonObject().get(projectName);
         return ((String) obj.get(propertyName.toString()));
     }
-    
+
     /**
      * Check if project exists
-     * @param project project name
+     * 
+     * @param project
+     *            project name
      * @return true if this project exists
      */
-    public boolean hasProject(String project){
+    public boolean hasProject(String project) {
         if (!this.getJsonObject().containsKey(project)) {
             return false;
         }
         return true;
     }
-    
+
     /**
      * Check if project property exists
-     * @param project project name
-     * @param property property name
+     * 
+     * @param project
+     *            project name
+     * @param property
+     *            property name
      * @return true if project property exists
      */
-    public boolean hasProjectProperty(String project, PropertiesName property){
+    public boolean hasProjectProperty(String project, PropertiesName property) {
         if (!this.getJsonObject().containsKey(project)) {
             return false;
         }
@@ -121,15 +142,36 @@ public abstract class JsonPublication extends JsonBasicOperations {
 
         return true;
     }
-    
+
     /**
      * @return set of all projects
      */
     @SuppressWarnings("unchecked")
-    public Set<String> getProjects(){
+    public Set<String> getProjects() {
         return this.getJsonObject().keySet();
     }
-    
+
+    /**
+     * Set extension
+     * 
+     * @param extension
+     *            extension to set
+     */
+    @SuppressWarnings("unchecked")
+    public void setPublicationExtension(PublicationExtension extension) {
+        this.getJsonObject().put(
+                PropertiesName.PUBLICATION_EXTENSION.toString(),
+                extension.toString());
+    }
+
+    /**
+     * @return publication extension
+     */
+    public String getPublicationExtension() {
+        return (String) this.getJsonObject()
+                .get(PropertiesName.PUBLICATION_EXTENSION.toString());
+    }
+
     /**
      * @return path to folder of the json file
      */
