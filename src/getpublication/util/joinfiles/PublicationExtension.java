@@ -1,4 +1,4 @@
-package getpublication.json.publication;
+package getpublication.util.joinfiles;
 
 public enum PublicationExtension {
     PDF {

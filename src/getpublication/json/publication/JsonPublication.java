@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 
 import getpublication.json.JsonBasicOperations;
 import getpublication.util.folder.CreateFolder;
+import getpublication.util.joinfiles.PublicationExtension;
 
 public abstract class JsonPublication extends JsonBasicOperations {
 
