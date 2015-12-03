@@ -166,13 +166,14 @@ public abstract class Chapter {
         }
 
         JoinFiles joinFiles = GetJoinFilesInstance.getInstance(extension);
-        
+
         if (joinFiles == null) {
             return "";
         }
 
         if (joinFiles.join(fileList, this.getFinalFileName()) == true) {
-            return this.getFinalFileName();
+            return UserFolder.getPathToTempFolder() + File.separator
+                    + this.getFinalFileName();
         }
 
         return "";

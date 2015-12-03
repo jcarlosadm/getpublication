@@ -6,7 +6,6 @@ import getpublication.util.folder.CreateFolder;
 
 public class UserFolder {
 
-    private static final String CACHE_FOLDER = "cache";
     private static final String TEMP_FOLDER = "temp";
     private static final String DB_FOLDER = "db";
     private static final String USER_HOME_LOCATION_PROPERTY = "user.home";
@@ -17,16 +16,11 @@ public class UserFolder {
         this.createMainFolder();
         this.createDBFolder();
         this.createTempFolder();
-        this.createCacheFolder();
         this.createPluginFolder();
     }
     
     private void createPluginFolder(){
         CreateFolder.create(new File(getPathToPluginFolder()));
-    }
-
-    private void createCacheFolder() {
-        CreateFolder.create(new File(getPathToCacheFolder()));
     }
 
     private void createTempFolder() {
@@ -52,10 +46,6 @@ public class UserFolder {
     
     public static String getPathToTempFolder(){
         return (getPathToMainFolder() + File.separator + TEMP_FOLDER);
-    }
-    
-    public static String getPathToCacheFolder(){
-        return (getPathToMainFolder() + File.separator + CACHE_FOLDER);
     }
     
     public static String getPathToPluginFolder(){

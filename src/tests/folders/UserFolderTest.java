@@ -18,7 +18,6 @@ public class UserFolderTest {
         assertTrue((new File(UserFolder.getPathToMainFolder()).exists()));
         assertTrue((new File(UserFolder.getPathToDbFolder()).exists()));
         assertTrue((new File(UserFolder.getPathToTempFolder()).exists()));
-        assertTrue((new File(UserFolder.getPathToCacheFolder()).exists()));
     }
 
 }
