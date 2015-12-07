@@ -50,6 +50,7 @@ public abstract class Chapter {
         Downloader downloader = new Downloader();
         String tempFolder = UserFolder.getPathToTempFolder();
         List<String> fileList = new ArrayList<>();
+        List<String> errorPages = new ArrayList<>();
 
         int page = 0;
         for (String urlString : this.urlStringList) {
@@ -73,13 +74,25 @@ public abstract class Chapter {
                     : this.downloadImage(downloader, outputFile, false));
             if (success) {
                 fileList.add(filename);
-                System.out.print("success ");
+                System.out.print("\rsuccess ");
             } else {
-                System.out.print("fail ");
+                errorPages.add(urlString);
+                System.out.print("\rfail ");
             }
-            System.out.println(
+            System.out.print(
                     "(page " + page + " of " + this.urlStringList.size() + ")");
         }
+        System.out.println();
+        
+        float percent = 100.0f * ((float) fileList.size() / this.urlStringList.size());
+        System.out.println(String.format("%.2f", percent) + "% of pages successfully downloaded");
+        if (!errorPages.isEmpty()) {
+            System.out.println("pages not downloaded:");
+            for (String errorPage : errorPages) {
+                System.out.println(errorPage);
+            }
+        }
+        
         return fileList;
     }
 
@@ -111,14 +124,15 @@ public abstract class Chapter {
                     fileList.set(index,
                             FilenameUtils.removeExtension(filename) + ".png");
                     file.delete();
-                    System.out.println("file " + FilenameUtils.getName(filename)
+                    System.out.print("\rfile " + FilenameUtils.getName(filename)
                             + " converted to "
                             + FilenameUtils.getName(fileList.get(index)));
                 } catch (IOException e) {
-                    System.out.println("fail to convert file " + filename);
+                    System.out.println("\rfail to convert file " + filename);
                 }
             }
         }
+        System.out.println();
     }
 
     private void moveJoinedFileToDownloadFolder(String joinedFilename,
