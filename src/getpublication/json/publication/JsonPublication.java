@@ -214,8 +214,9 @@ public abstract class JsonPublication extends JsonBasicOperations {
         }
 
         JSONObject projectObj = this.getProjectsObj();
+        JSONObject project = (JSONObject) projectObj.get(projectName);
 
-        projectObj.put(PropertiesName.LAST_CHAPTER.toString(), lastChapter);
+        project.put(PropertiesName.LAST_CHAPTER.toString(), lastChapter);
     }
 
     public String getLastChapter(String projectName) {
@@ -224,11 +225,12 @@ public abstract class JsonPublication extends JsonBasicOperations {
         }
 
         JSONObject projectObj = this.getProjectsObj();
-        if (!projectObj.containsKey(PropertiesName.LAST_CHAPTER.toString())) {
+        JSONObject project = (JSONObject) projectObj.get(projectName);
+        if (!project.containsKey(PropertiesName.LAST_CHAPTER.toString())) {
             return "";
         }
 
-        return ((String) projectObj
+        return ((String) project
                 .get(PropertiesName.LAST_CHAPTER.toString()));
     }
 
