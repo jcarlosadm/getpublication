@@ -35,7 +35,7 @@ public abstract class JsonPublication extends JsonBasicOperations {
                 this.getJsonObject().put("projects", new JSONObject());
                 projects = this.getProjectsObj();
             }
-            
+
             projects.put(projectName, new JSONObject());
         }
     }
@@ -49,7 +49,7 @@ public abstract class JsonPublication extends JsonBasicOperations {
         if (!this.hasProject(projectName)) {
             return false;
         }
-        
+
         JSONObject projects = this.getProjectsObj();
 
         projects.remove(projectName);
@@ -72,9 +72,9 @@ public abstract class JsonPublication extends JsonBasicOperations {
         if (!this.hasProject(projectName)) {
             return;
         }
-        
+
         JSONObject projects = this.getProjectsObj();
-        
+
         JSONObject obj = (JSONObject) projects.get(projectName);
         obj.put(propertyName.toString(), propertyValue);
     }
@@ -93,7 +93,7 @@ public abstract class JsonPublication extends JsonBasicOperations {
         if (!this.hasProjectProperty(projectName, propertyName)) {
             return false;
         }
-        
+
         JSONObject projects = this.getProjectsObj();
 
         JSONObject obj = (JSONObject) projects.get(projectName);
@@ -115,9 +115,9 @@ public abstract class JsonPublication extends JsonBasicOperations {
         if (!this.hasProjectProperty(projectName, propertyName)) {
             return "";
         }
-        
+
         JSONObject projects = this.getProjectsObj();
-        
+
         JSONObject obj = (JSONObject) projects.get(projectName);
         return ((String) obj.get(propertyName.toString()));
     }
@@ -134,7 +134,7 @@ public abstract class JsonPublication extends JsonBasicOperations {
         if (projects == null) {
             return false;
         }
-        
+
         if (!projects.containsKey(projectName)) {
             return false;
         }
@@ -150,12 +150,13 @@ public abstract class JsonPublication extends JsonBasicOperations {
      *            property name
      * @return true if project property exists
      */
-    public boolean hasProjectProperty(String projectName, PropertiesName propertyName) {
+    public boolean hasProjectProperty(String projectName,
+            PropertiesName propertyName) {
         JSONObject projects = this.getProjectsObj();
         if (projects == null) {
             return false;
         }
-        
+
         if (!projects.containsKey(projectName)) {
             return false;
         }
@@ -178,11 +179,11 @@ public abstract class JsonPublication extends JsonBasicOperations {
         if (projects == null) {
             return null;
         }
-        
+
         return projects.keySet();
     }
-    
-    private JSONObject getProjectsObj(){
+
+    private JSONObject getProjectsObj() {
         return ((JSONObject) this.getJsonObject().get("projects"));
     }
 
@@ -204,6 +205,31 @@ public abstract class JsonPublication extends JsonBasicOperations {
     public String getPublicationExtension() {
         return (String) this.getJsonObject()
                 .get(PropertiesName.PUBLICATION_EXTENSION.toString());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setLastChapter(String projectName, String lastChapter) {
+        if (!this.hasProject(projectName)) {
+            return;
+        }
+
+        JSONObject projectObj = this.getProjectsObj();
+
+        projectObj.put(PropertiesName.LAST_CHAPTER.toString(), lastChapter);
+    }
+
+    public String getLastChapter(String projectName) {
+        if (!this.hasProject(projectName)) {
+            return null;
+        }
+
+        JSONObject projectObj = this.getProjectsObj();
+        if (!projectObj.containsKey(PropertiesName.LAST_CHAPTER.toString())) {
+            return "";
+        }
+
+        return ((String) projectObj
+                .get(PropertiesName.LAST_CHAPTER.toString()));
     }
 
     /**

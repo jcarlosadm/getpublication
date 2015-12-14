@@ -13,6 +13,12 @@ public enum PropertiesName {
         public String toString() {
             return "publicationExtension";
         }
+    },
+    LAST_CHAPTER {
+        @Override
+        public String toString() {
+            return "lastChapter";
+        }
     };
     
     @Override
