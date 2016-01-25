@@ -12,6 +12,7 @@ public class Downloader {
     private URL url = null;
 
     public void setUrl(String urlString) throws MalformedURLException {
+        urlString = urlString.replaceAll(" ", "%20");
         this.url = new URL(urlString);
     }
     
