@@ -1,0 +1,1 @@
+Dependency not found in maven repository: web-imageio (https://bitbucket.org/luciad/webp-imageio/downloads).
