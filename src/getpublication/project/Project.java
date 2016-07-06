@@ -14,14 +14,14 @@ public abstract class Project {
 
     private String name;
 
-    private boolean anonymousMode = false;
+    protected boolean anonymousMode = false;
 
     private List<String> chapterNames = null;
 
     public Project(String name, String urlPart, boolean anonymousMode) {
         this.name = name;
         this.urlString = this.generateUrlString(urlPart);
-        this.anonymousMode = false;
+        this.anonymousMode = anonymousMode;
     }
 
     public String getName() {

@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import getpublication.folders.UserFolder;
@@ -25,18 +25,20 @@ public class JoinToPdf implements JoinFiles {
             FileOutputStream fos = new FileOutputStream(path);
             writer = PdfWriter.getInstance(document, fos);
             writer.open();
-            document.open();
+            document.setMargins(5, 5, 5, 5);
 
             for (String fileName : fileList) {
                 Image image = Image.getInstance(fileName);
-                if (image.getWidth() >= PageSize.A4.getWidth()
-                        || image.getHeight() >= PageSize.A4.getHeight()) {
-                    image.scaleToFit(PageSize.A4.getWidth(),
-                            PageSize.A4.getHeight());
+                document.setPageSize(new Rectangle(image.getWidth(), image.getHeight()));
+                image.scaleToFit(document.getPageSize());
+                
+                if (!document.isOpen()) {
+                    document.open();
+                    document.add(image);
+                } else {
+                    document.newPage();
+                    document.add(image);
                 }
-
-                document.add(image);
-                document.newPage();
             }
             document.close();
             writer.close();
