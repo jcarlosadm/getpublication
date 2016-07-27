@@ -2,7 +2,6 @@ package getpublication.project.chapter;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +11,16 @@ import org.apache.commons.io.FilenameUtils;
 import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
 import getpublication.json.publication.JsonPublication;
-import getpublication.util.ConvertImage;
+import getpublication.util.ConvertThread;
 import getpublication.util.Downloader;
+import getpublication.util.DownloaderThread;
 import getpublication.util.joinfiles.GetJoinFilesInstance;
 import getpublication.util.joinfiles.JoinFiles;
 import getpublication.util.joinfiles.PublicationExtension;
 
 public abstract class Chapter {
+    private static final int NUMBER_OF_THREADS = 4;
+
     private static final String DEFAULT_EXTENSION = PublicationExtension.CBZ
             .toString();
 
@@ -47,92 +49,96 @@ public abstract class Chapter {
     }
 
     private List<String> downloadImageFiles() {
-        Downloader downloader = new Downloader();
         String tempFolder = UserFolder.getPathToTempFolder();
         List<String> fileList = new ArrayList<>();
-        List<String> errorPages = new ArrayList<>();
+        List<Thread> threads = new ArrayList<>();
 
         int page = 0;
         for (String urlString : this.urlStringList) {
             page += 1;
 
-            String extension = FilenameUtils.getExtension(urlString);
-            String filename = tempFolder + File.separator
-                    + String.format("%04d", page) + "." + extension;
-
-            File outputFile = new File(filename);
-            try {
-                downloader.setUrl(urlString);
-            } catch (MalformedURLException e) {
-                System.out.println("invalid url (page " + page + " of "
-                        + this.urlStringList.size() + ")");
-                continue;
+            threads.add(new Thread(new DownloaderThread(urlString, page,
+                    this.urlStringList.size(), tempFolder, this)));
+            
+            if (threads.size() >= NUMBER_OF_THREADS) {
+                this.executeThread(threads);
             }
-
-            boolean success = this.downloadImage(downloader, outputFile, true);
-            success = (success ? true
-                    : this.downloadImage(downloader, outputFile, false));
-            if (success) {
-                fileList.add(filename);
-                System.out.print("\rsuccess ");
-            } else {
-                errorPages.add(urlString);
-                System.out.print("\rfail ");
-            }
-            System.out.print(
-                    "(page " + page + " of " + this.urlStringList.size() + ")");
         }
+        
+        if (threads.size() > 0) {
+            this.executeThread(threads);
+        }
+
+        File tempFolderFolder = new File(tempFolder);
+        File[] files = tempFolderFolder.listFiles();
+        for (File file : files) {
+            if (!file.isDirectory()) {
+                fileList.add(file.getAbsolutePath());
+            }
+        }
+
         System.out.println();
-        
-        float percent = 100.0f * ((float) fileList.size() / this.urlStringList.size());
-        System.out.println(String.format("%.2f", percent) + "% of pages successfully downloaded");
-        if (!errorPages.isEmpty()) {
-            System.out.println("pages not downloaded:");
-            for (String errorPage : errorPages) {
-                System.out.println(errorPage);
-            }
-        }
-        
+
+        float percent = 100.0f
+                * ((float) fileList.size() / this.urlStringList.size());
+        System.out.println(String.format("%.2f", percent)
+                + "% of pages successfully downloaded");
+
         return fileList;
     }
 
-    private boolean downloadImage(Downloader downloader, File outputFile,
-            boolean fixUrl) {
-        try {
-            downloader.run(outputFile);
-        } catch (IOException e) {
-            if (fixUrl) {
-                System.out.println("error to download. fixing url...");
-                this.fixUrl(downloader);
-            } else {
-                System.out.println("error to download.");
-            }
-            return false;
-        }
-        return true;
-    }
-
     private void convertImageFiles(List<String> fileList) {
+
+        List<Thread> threads = new ArrayList<>();
         for (int index = 0; index < fileList.size(); index++) {
             String filename = (String) fileList.get(index);
 
             String extension = FilenameUtils.getExtension(filename);
             if (extension.equals("webp")) {
-                try {
-                    File file = new File(filename);
-                    ConvertImage.convert(file, "png");
-                    fileList.set(index,
-                            FilenameUtils.removeExtension(filename) + ".png");
-                    file.delete();
-                    System.out.print("\rfile " + FilenameUtils.getName(filename)
-                            + " converted to "
-                            + FilenameUtils.getName(fileList.get(index)));
-                } catch (IOException e) {
-                    System.out.println("\rfail to convert file " + filename);
+
+                threads.add(new Thread(new ConvertThread(filename)));
+                if (threads.size() >= NUMBER_OF_THREADS) {
+                    this.executeThread(threads);
+                }
+
+            }
+        }
+
+        if (threads.size() > 0) {
+            this.executeThread(threads);
+        }
+
+        if (!fileList.isEmpty()) {
+            String folderPath = fileList.get(0);
+            folderPath = folderPath.substring(0,
+                    folderPath.lastIndexOf(File.separator));
+            File folder = new File(folderPath);
+            File[] list = folder.listFiles();
+            fileList.clear();
+            for (File file : list) {
+                if (!file.isDirectory()) {
+                    fileList.add(file.getAbsolutePath());
                 }
             }
         }
+
         System.out.println();
+    }
+
+    private void executeThread(List<Thread> threads) {
+        for (Thread thread : threads) {
+            thread.start();
+        }
+
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        threads.clear();
     }
 
     private void moveJoinedFileToDownloadFolder(String joinedFilename,
@@ -193,7 +199,7 @@ public abstract class Chapter {
         return "";
     }
 
-    protected abstract void fixUrl(Downloader downloader);
+    public abstract void fixUrl(Downloader downloader);
 
     protected abstract JsonPublication getJsonPublication();
 }
