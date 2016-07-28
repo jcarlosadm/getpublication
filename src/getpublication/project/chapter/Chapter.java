@@ -11,9 +11,10 @@ import org.apache.commons.io.FilenameUtils;
 import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
 import getpublication.json.publication.JsonPublication;
-import getpublication.util.ConvertThread;
-import getpublication.util.Downloader;
-import getpublication.util.DownloaderThread;
+import getpublication.util.PageProgressPrinter;
+import getpublication.util.convert.ConvertThread;
+import getpublication.util.downloader.Downloader;
+import getpublication.util.downloader.DownloaderThread;
 import getpublication.util.joinfiles.GetJoinFilesInstance;
 import getpublication.util.joinfiles.JoinFiles;
 import getpublication.util.joinfiles.PublicationExtension;
@@ -52,6 +53,11 @@ public abstract class Chapter {
         String tempFolder = UserFolder.getPathToTempFolder();
         List<String> fileList = new ArrayList<>();
         List<Thread> threads = new ArrayList<>();
+        
+        PageProgressPrinter dPrinter = PageProgressPrinter.getInstance();
+        dPrinter.setTotalPages(this.urlStringList.size());
+        dPrinter.resetCounters();
+        dPrinter.setMessageBefore("Download Progress");
 
         int page = 0;
         for (String urlString : this.urlStringList) {
@@ -68,6 +74,8 @@ public abstract class Chapter {
         if (threads.size() > 0) {
             this.executeThread(threads);
         }
+        
+        dPrinter.newLine();
 
         File tempFolderFolder = new File(tempFolder);
         File[] files = tempFolderFolder.listFiles();
@@ -76,8 +84,6 @@ public abstract class Chapter {
                 fileList.add(file.getAbsolutePath());
             }
         }
-
-        System.out.println();
 
         float percent = 100.0f
                 * ((float) fileList.size() / this.urlStringList.size());
@@ -90,23 +96,34 @@ public abstract class Chapter {
     private void convertImageFiles(List<String> fileList) {
 
         List<Thread> threads = new ArrayList<>();
+        List<String> filesToConvert = new ArrayList<>();
+        
         for (int index = 0; index < fileList.size(); index++) {
-            String filename = (String) fileList.get(index);
-
+            String filename = fileList.get(index);
             String extension = FilenameUtils.getExtension(filename);
+            
             if (extension.equals("webp")) {
-
-                threads.add(new Thread(new ConvertThread(filename)));
-                if (threads.size() >= NUMBER_OF_THREADS) {
-                    this.executeThread(threads);
-                }
-
+                filesToConvert.add(filename);
             }
         }
-
+        
+        PageProgressPrinter cPrinter = PageProgressPrinter.getInstance();
+        cPrinter.setTotalPages(filesToConvert.size());
+        cPrinter.resetCounters();
+        cPrinter.setMessageBefore("Convert Progress");
+        
+        for (String filename : filesToConvert) {
+            threads.add(new Thread(new ConvertThread(filename)));
+            if (threads.size() >= NUMBER_OF_THREADS) {
+                this.executeThread(threads);
+            }
+        }
+        
         if (threads.size() > 0) {
             this.executeThread(threads);
         }
+        
+        cPrinter.newLine();
 
         if (!fileList.isEmpty()) {
             String folderPath = fileList.get(0);
@@ -121,8 +138,6 @@ public abstract class Chapter {
                 }
             }
         }
-
-        System.out.println();
     }
 
     private void executeThread(List<Thread> threads) {

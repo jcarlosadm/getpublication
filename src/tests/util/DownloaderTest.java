@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 
 import org.junit.Test;
 
-import getpublication.util.Downloader;
+import getpublication.util.downloader.Downloader;
 
 public class DownloaderTest {
 

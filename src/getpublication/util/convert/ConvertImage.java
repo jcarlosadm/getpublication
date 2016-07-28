@@ -1,4 +1,4 @@
-package getpublication.util;
+package getpublication.util.convert;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

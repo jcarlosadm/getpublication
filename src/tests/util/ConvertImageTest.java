@@ -9,8 +9,8 @@ import java.io.IOException;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
-import getpublication.util.ConvertImage;
-import getpublication.util.Downloader;
+import getpublication.util.convert.ConvertImage;
+import getpublication.util.downloader.Downloader;
 
 public class ConvertImageTest {
 

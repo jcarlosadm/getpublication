@@ -1,4 +1,4 @@
-package getpublication.util;
+package getpublication.util.downloader;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import org.apache.commons.io.FilenameUtils;
 
 import getpublication.project.chapter.Chapter;
+import getpublication.util.PageProgressPrinter;
 
 public class DownloaderThread implements Runnable {
 
@@ -27,6 +28,7 @@ public class DownloaderThread implements Runnable {
     @Override
     public void run() {
         Downloader downloader = new Downloader();
+        PageProgressPrinter dPrinter = PageProgressPrinter.getInstance();
         
         String extension = FilenameUtils.getExtension(this.urlString);
         String filename = this.tempFolder + File.separator
@@ -45,12 +47,8 @@ public class DownloaderThread implements Runnable {
         success = (success ? true
                 : this.downloadImage(downloader, outputFile, false));
         if (success) {
-            System.out.print("\rsuccess ");
-        } else {
-            System.out.print("\rfail ");
+            dPrinter.printProgress(1);
         }
-        System.out.print(
-                "(page " + page + " of " + this.totalPages + ")");
     }
     
     private boolean downloadImage(Downloader downloader, File outputFile,

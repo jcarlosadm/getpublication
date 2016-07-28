@@ -1,4 +1,4 @@
-package getpublication.util;
+package getpublication.util.downloader;
 
 import java.io.File;
 import java.io.IOException;
