@@ -2,6 +2,7 @@ package getpublication.util;
 
 public class PageProgressPrinter {
 
+    private static final int TOTAL_CELLS = 30;
     private int totalPages = 0;
     private int currentPage = 0;
     private String messageBefore = "";
@@ -18,7 +19,7 @@ public class PageProgressPrinter {
 
         return instance;
     }
-    
+
     public synchronized void resetCounters() {
         this.currentPage = 0;
     }
@@ -42,12 +43,14 @@ public class PageProgressPrinter {
             this.currentPage = this.totalPages;
         }
 
-        System.out.print("\r " + this.messageBefore + " [");
-        for (int index = 0; index < this.currentPage; ++index) {
+        int filledCells = (int) (TOTAL_CELLS
+                * (((double) this.currentPage) / ((double) this.totalPages)));
+
+        System.out.print("\r" + this.messageBefore + " [");
+        for (int index = 0; index < filledCells; ++index) {
             System.out.print("=");
         }
-        for (int index = 0; index < (this.totalPages
-                - this.currentPage); ++index) {
+        for (int index = 0; index < (TOTAL_CELLS - filledCells); ++index) {
             System.out.print("_");
         }
         System.out.print("] pages = " + this.totalPages);

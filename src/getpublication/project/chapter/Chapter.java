@@ -3,6 +3,7 @@ package getpublication.project.chapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -84,6 +85,8 @@ public abstract class Chapter {
                 fileList.add(file.getAbsolutePath());
             }
         }
+        
+        Collections.sort(fileList);
 
         float percent = 100.0f
                 * ((float) fileList.size() / this.urlStringList.size());
@@ -137,6 +140,8 @@ public abstract class Chapter {
                     fileList.add(file.getAbsolutePath());
                 }
             }
+            
+            Collections.sort(fileList);
         }
     }
 
