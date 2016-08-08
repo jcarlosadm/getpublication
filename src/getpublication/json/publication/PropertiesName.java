@@ -19,6 +19,12 @@ public enum PropertiesName {
         public String toString() {
             return "lastChapter";
         }
+    }, 
+    CONVERT_IMAGES {
+        @Override
+        public String toString() {
+            return "convertImages";
+        }
     };
     
     @Override

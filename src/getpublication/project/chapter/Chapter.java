@@ -29,9 +29,12 @@ public abstract class Chapter {
     private List<String> urlStringList = new ArrayList<>();
 
     protected String name;
+    
+    protected boolean convertImages = true;
 
-    public Chapter(String name) {
+    public Chapter(String name, boolean convertImages) {
         this.name = name;
+        this.convertImages = convertImages;
     }
 
     public void addUrlStringList(List<String> urlStringList) {
@@ -42,7 +45,9 @@ public abstract class Chapter {
         System.out.println("downloading chapter " + this.name);
 
         List<String> fileList = this.downloadImageFiles();
-        this.convertImageFiles(fileList);
+        if (convertImages == true) {
+            this.convertImageFiles(fileList);
+        }
         String JoinedFilename = this.joinFiles(fileList);
         this.moveJoinedFileToDownloadFolder(JoinedFilename, downloadFolder);
         this.deleteTempFiles(fileList);

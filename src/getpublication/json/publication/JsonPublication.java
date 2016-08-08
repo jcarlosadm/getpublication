@@ -206,6 +206,23 @@ public abstract class JsonPublication extends JsonBasicOperations {
         return (String) this.getJsonObject()
                 .get(PropertiesName.PUBLICATION_EXTENSION.toString());
     }
+    
+    @SuppressWarnings("unchecked")
+    public void setConvertImagesProperty(boolean value) {
+        this.getJsonObject().put(PropertiesName.CONVERT_IMAGES, (new Boolean(value)).toString());
+    }
+    
+    public boolean getConvertImagesProperty() {
+        String string = (String) this.getJsonObject().get(PropertiesName.CONVERT_IMAGES.toString());
+        
+        boolean value = true;
+        try {
+            value = Boolean.parseBoolean(string);
+        } catch (Exception e) {
+        }
+        
+        return value;
+    }
 
     @SuppressWarnings("unchecked")
     public void setLastChapter(String projectName, String lastChapter) {

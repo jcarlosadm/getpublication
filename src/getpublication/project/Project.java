@@ -48,7 +48,7 @@ public abstract class Project {
         return this.chapterNames;
     }
 
-    public boolean downloadChapter(String chapterName, DownloadFolder folder) {
+    public boolean downloadChapter(String chapterName, DownloadFolder folder, boolean convertChapter) {
         this.checkChapterNameListExists();
 
         HtmlChapterParser htmlChapterParser = this.getHtmlParser(chapterName);
@@ -57,7 +57,7 @@ public abstract class Project {
         }
 
         String title = htmlChapterParser.getTitle();
-        Chapter chapter = this.getChapterGenerator(title);
+        Chapter chapter = this.getChapterGenerator(title, convertChapter);
         String finalFileName = chapter.getFinalFileName();
         
         this.checkFileInTempFolder(finalFileName);
@@ -109,7 +109,7 @@ public abstract class Project {
 
     protected abstract List<String> generateAllChapterNames();
 
-    protected abstract Chapter getChapterGenerator(String title);
+    protected abstract Chapter getChapterGenerator(String title, boolean convertChapter);
 
     protected abstract HtmlChapterParser getHtmlParser(String chapterName);
 }
