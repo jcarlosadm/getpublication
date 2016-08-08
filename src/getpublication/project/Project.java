@@ -19,7 +19,7 @@ public abstract class Project {
     private List<String> chapterNames = null;
 
     public Project(String name, String urlPart, boolean anonymousMode) {
-        this.name = name;
+        this.name = name.replaceAll("/", "_");
         this.urlString = this.generateUrlString(urlPart);
         this.anonymousMode = anonymousMode;
     }

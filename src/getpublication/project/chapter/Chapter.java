@@ -33,7 +33,7 @@ public abstract class Chapter {
     protected boolean convertImages = true;
 
     public Chapter(String name, boolean convertImages) {
-        this.name = name;
+        this.name = name.replaceAll("/", "_");
         this.convertImages = convertImages;
     }
 
