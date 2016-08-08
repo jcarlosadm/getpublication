@@ -12,13 +12,13 @@ import org.apache.commons.io.FilenameUtils;
 import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
 import getpublication.json.publication.JsonPublication;
-import getpublication.util.PageProgressPrinter;
 import getpublication.util.convert.ConvertThread;
 import getpublication.util.downloader.Downloader;
 import getpublication.util.downloader.DownloaderThread;
 import getpublication.util.joinfiles.GetJoinFilesInstance;
 import getpublication.util.joinfiles.JoinFiles;
 import getpublication.util.joinfiles.PublicationExtension;
+import getpublication.util.pageProgress.PageProgressPrinter;
 
 public abstract class Chapter {
     private static final int NUMBER_OF_THREADS = 4;

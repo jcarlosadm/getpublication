@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
 
-import getpublication.util.PageProgressPrinter;
+import getpublication.util.pageProgress.PageProgressPrinter;
 
 public class ConvertThread implements Runnable {
 

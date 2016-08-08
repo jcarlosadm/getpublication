@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import org.apache.commons.io.FilenameUtils;
 
 import getpublication.project.chapter.Chapter;
-import getpublication.util.PageProgressPrinter;
+import getpublication.util.pageProgress.PageProgressPrinter;
 
 public class DownloaderThread implements Runnable {
 
