@@ -209,7 +209,7 @@ public abstract class JsonPublication extends JsonBasicOperations {
     
     @SuppressWarnings("unchecked")
     public void setConvertImagesProperty(boolean value) {
-        this.getJsonObject().put(PropertiesName.CONVERT_IMAGES, (new Boolean(value)).toString());
+        this.getJsonObject().put(PropertiesName.CONVERT_IMAGES.toString(), (new Boolean(value)).toString());
     }
     
     public boolean getConvertImagesProperty() {
