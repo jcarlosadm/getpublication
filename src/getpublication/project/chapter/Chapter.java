@@ -13,6 +13,7 @@ import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
 import getpublication.json.publication.JsonPublication;
 import getpublication.util.convert.ConvertThread;
+import getpublication.util.convert.ConverterAlgorithm;
 import getpublication.util.downloader.Downloader;
 import getpublication.util.downloader.DownloaderThread;
 import getpublication.util.joinfiles.GetJoinFilesInstance;
@@ -31,10 +32,16 @@ public abstract class Chapter {
     protected String name;
     
     protected boolean convertImages = true;
+    
+    private ConverterAlgorithm converterAlgorithm = null;
 
     public Chapter(String name, boolean convertImages) {
         this.name = name.replaceAll("/", "_");
         this.convertImages = convertImages;
+    }
+    
+    public void setConvertImageAlgorithm(ConverterAlgorithm cAlgorithm) {
+        this.converterAlgorithm = cAlgorithm;
     }
 
     public void addUrlStringList(List<String> urlStringList) {
@@ -121,7 +128,9 @@ public abstract class Chapter {
         cPrinter.setMessageBefore("Convert Progress");
         
         for (String filename : filesToConvert) {
-            threads.add(new Thread(new ConvertThread(filename)));
+            ConvertThread cThread = new ConvertThread(filename);
+            cThread.setConvertAlgorithm(this.converterAlgorithm);
+            threads.add(new Thread(cThread));
             if (threads.size() >= NUMBER_OF_THREADS) {
                 this.executeThread(threads);
             }

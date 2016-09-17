@@ -7,6 +7,7 @@ import getpublication.folders.DownloadFolder;
 import getpublication.folders.UserFolder;
 import getpublication.parser.HtmlChapterParser;
 import getpublication.project.chapter.Chapter;
+import getpublication.util.convert.ConverterAlgorithm;
 
 public abstract class Project {
 
@@ -17,11 +18,17 @@ public abstract class Project {
     protected boolean anonymousMode = false;
 
     private List<String> chapterNames = null;
+    
+    private ConverterAlgorithm converterAlgorithm = null;
 
     public Project(String name, String urlPart, boolean anonymousMode) {
         this.name = name.replaceAll("/", "_");
         this.urlString = this.generateUrlString(urlPart);
         this.anonymousMode = anonymousMode;
+    }
+    
+    public void setConvertImageAlgorithm(ConverterAlgorithm cAlgorithm) {
+        this.converterAlgorithm = cAlgorithm;
     }
 
     public String getName() {
@@ -58,6 +65,7 @@ public abstract class Project {
 
         String title = htmlChapterParser.getTitle();
         Chapter chapter = this.getChapterGenerator(title, convertChapter);
+        chapter.setConvertImageAlgorithm(this.converterAlgorithm);
         String finalFileName = chapter.getFinalFileName();
         
         this.checkFileInTempFolder(finalFileName);

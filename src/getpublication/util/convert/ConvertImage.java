@@ -1,22 +1,23 @@
 package getpublication.util.convert;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FilenameUtils;
-
 public class ConvertImage {
-    public static boolean convert(File file, String outputFormat)
+    
+    private static ConverterAlgorithm converterAlgorithm = null;
+    
+    public static void setConverterAlgorithm(ConverterAlgorithm algorithm) {
+        converterAlgorithm = algorithm;
+    }
+    
+    public static boolean convert(File file, ImageFormats outputFormat)
             throws IOException {
 
-        BufferedImage image = ImageIO.read(file);
-
-        String outputFileName = FilenameUtils.removeExtension(file.getPath())
-                + "." + outputFormat;
-
-        return ImageIO.write(image, outputFormat, new File(outputFileName));
+        if (converterAlgorithm != null) {
+            return converterAlgorithm.convert(file, outputFormat);
+        }
+        
+        return false;
     }
 }

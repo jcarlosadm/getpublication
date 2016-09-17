@@ -10,9 +10,15 @@ import getpublication.util.pageProgress.PageProgressPrinter;
 public class ConvertThread implements Runnable {
 
     private String filename = "";
+    
+    private ConverterAlgorithm converterAlgorithm = null;
 
     public ConvertThread(String filename) {
         this.filename = filename;
+    }
+    
+    public void setConvertAlgorithm (ConverterAlgorithm cAlgorithm){
+        this.converterAlgorithm = cAlgorithm;
     }
 
     @Override
@@ -23,7 +29,8 @@ public class ConvertThread implements Runnable {
         if (extension.equals("webp")) {
             try {
                 File file = new File(filename);
-                ConvertImage.convert(file, "png");
+                ConvertImage.setConverterAlgorithm(this.converterAlgorithm);
+                ConvertImage.convert(file, ImageFormats.PNG);
                 file.delete();
                 cPrinter.printProgress(1);
             } catch (IOException e) {

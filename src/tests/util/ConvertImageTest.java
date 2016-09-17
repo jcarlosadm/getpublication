@@ -10,12 +10,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import getpublication.util.convert.ConvertImage;
+import getpublication.util.convert.ImageFormats;
 import getpublication.util.downloader.Downloader;
 
 public class ConvertImageTest {
 
     
-    private static final String EXTENSION_TOBE_CONVERTED = "jpg";
+    private static final ImageFormats EXTENSION_TOBE_CONVERTED = ImageFormats.JPEG;
     private static final String OUTPUT_FILE_TEST = "outputFileTest.webp";
     private static final String URL_STRING = "http://img.mangahost.com/br/images/"
             +"nisekoi-br/134/AS_CD_NSK_01.jpg.webp";
