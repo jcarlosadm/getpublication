@@ -19,6 +19,7 @@ import getpublication.util.downloader.DownloaderThread;
 import getpublication.util.joinfiles.GetJoinFilesInstance;
 import getpublication.util.joinfiles.JoinFiles;
 import getpublication.util.joinfiles.PublicationExtension;
+import getpublication.util.logs.LogFileWriter;
 import getpublication.util.pageProgress.PageProgressPrinter;
 
 public abstract class Chapter {
@@ -104,6 +105,14 @@ public abstract class Chapter {
                 * ((float) fileList.size() / this.urlStringList.size());
         System.out.println(String.format("%.2f", percent)
                 + "% of pages successfully downloaded");
+        
+        LogFileWriter logFileWriter = LogFileWriter.getInstance(null);
+        try {
+            logFileWriter.writeLog(String.format("%.2f", percent)
+                    + "% of file \"" + this.name + "\" downloaded");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return fileList;
     }
@@ -156,7 +165,15 @@ public abstract class Chapter {
             }
             
             Collections.sort(fileList);
+            
+            LogFileWriter logFileWriter = LogFileWriter.getInstance(null);
+            try {
+                logFileWriter.writeLog("\""+this.name+"\" converted");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        
     }
 
     private void executeThread(List<Thread> threads) {

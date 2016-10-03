@@ -11,14 +11,20 @@ public class UserFolder {
     private static final String USER_HOME_LOCATION_PROPERTY = "user.home";
     private static final String MAIN_FOLDER = ".getpublications";
     private static final String PLUGIN_FOLDER = "plugins";
+    private static final String LOG_FOLDER = "logs";
 
     public void createFolders() {
         this.createMainFolder();
         this.createDBFolder();
         this.createTempFolder();
         this.createPluginFolder();
+        this.createLogFolder();
     }
     
+    private void createLogFolder() {
+        CreateFolder.create(new File(getPathToLogFolder()));
+    }
+
     private void createPluginFolder(){
         CreateFolder.create(new File(getPathToPluginFolder()));
     }
@@ -33,6 +39,10 @@ public class UserFolder {
 
     private void createMainFolder() {
         CreateFolder.create(new File(getPathToMainFolder()));
+    }
+    
+    public static String getPathToLogFolder() {
+        return (getPathToMainFolder() + File.separator + LOG_FOLDER);
     }
 
     public static String getPathToMainFolder() {
