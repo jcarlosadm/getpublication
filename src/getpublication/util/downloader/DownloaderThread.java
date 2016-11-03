@@ -17,19 +17,25 @@ public class DownloaderThread implements Runnable {
     private int totalPages = 0;
     private String tempFolder = "";
     
-    public DownloaderThread(String urlString, int page , int totalPages, String tempFolder, Chapter chapter) {
+    private DownloaderCount downloaderCount;
+
+    public DownloaderThread(String urlString, int page, int totalPages,
+            String tempFolder, Chapter chapter,
+            DownloaderCount downloaderCount) {
         this.urlString = urlString;
         this.chapter = chapter;
         this.page = page;
         this.totalPages = totalPages;
         this.tempFolder = tempFolder;
+        
+        this.downloaderCount = downloaderCount;
     }
-    
+
     @Override
     public void run() {
         Downloader downloader = new Downloader();
         PageProgressPrinter dPrinter = PageProgressPrinter.getInstance();
-        
+
         String extension = FilenameUtils.getExtension(this.urlString);
         String filename = this.tempFolder + File.separator
                 + String.format("%04d", page) + "." + extension;
@@ -40,6 +46,7 @@ public class DownloaderThread implements Runnable {
         } catch (MalformedURLException e) {
             System.out.println("invalid url (page " + page + " of "
                     + this.totalPages + ")");
+            this.changeCount();
             return;
         }
 
@@ -49,8 +56,15 @@ public class DownloaderThread implements Runnable {
         if (success) {
             dPrinter.printProgress(1);
         }
+        
+        this.changeCount();
     }
     
+    private synchronized void changeCount() {
+        this.downloaderCount.decrement();
+        this.downloaderCount.unblock();
+    }
+
     private boolean downloadImage(Downloader downloader, File outputFile,
             boolean fixUrl) {
         try {
