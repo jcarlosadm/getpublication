@@ -15,7 +15,6 @@ import getpublication.json.publication.JsonPublication;
 import getpublication.util.convert.ConvertThread;
 import getpublication.util.convert.ConverterAlgorithm;
 import getpublication.util.downloader.Downloader;
-import getpublication.util.downloader.DownloaderCount;
 import getpublication.util.downloader.DownloaderThread;
 import getpublication.util.joinfiles.GetJoinFilesInstance;
 import getpublication.util.joinfiles.JoinFiles;
@@ -29,7 +28,6 @@ public abstract class Chapter {
 
     private static final String DEFAULT_EXTENSION = PublicationExtension.CBZ
             .toString();
-    private static final int SLEEP_SECONDS = 1;
 
     private List<String> urlStringList = new ArrayList<>();
 
@@ -75,37 +73,24 @@ public abstract class Chapter {
         dPrinter.resetCounters();
         dPrinter.setMessageBefore("Download Progress");
         
-        DownloaderCount dCount = new DownloaderCount();
+        List<Thread> threads = new ArrayList<>();
 
         int page = 0;
         for (String urlString : this.urlStringList) {
             page += 1;
-            Thread thread = new Thread(new DownloaderThread(urlString, page,
-                    this.urlStringList.size(), tempFolder, this, dCount));
-            dCount.increment();
             
-            if (dCount.getThreadCount() >= NUMBER_OF_THREADS_TO_DOWNLOAD) {
-                dCount.block();
-                thread.start();
-                while (dCount.isBlocked()) {
-                    try {
-                        Thread.sleep(SLEEP_SECONDS * 100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                thread.start();
+            threads.add(new Thread(new DownloaderThread(urlString, page,
+                    this.urlStringList.size(), tempFolder, this)));
+            if (threads.size() >= NUMBER_OF_THREADS_TO_DOWNLOAD) {
+                this.executeThreads(threads);
             }
         }
         
-        while (dCount.getThreadCount() > 0) {
-            try {
-                Thread.sleep(SLEEP_SECONDS * 100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (threads.size() > 0) {
+            this.executeThreads(threads);
         }
+        
+        
         
         dPrinter.newLine();
 
@@ -159,12 +144,12 @@ public abstract class Chapter {
             cThread.setConvertAlgorithm(this.converterAlgorithm);
             threads.add(new Thread(cThread));
             if (threads.size() >= NUMBER_OF_THREADS_TO_CONVERT) {
-                this.executeThread(threads);
+                this.executeThreads(threads);
             }
         }
         
         if (threads.size() > 0) {
-            this.executeThread(threads);
+            this.executeThreads(threads);
         }
         
         cPrinter.newLine();
@@ -194,7 +179,7 @@ public abstract class Chapter {
         
     }
 
-    private void executeThread(List<Thread> threads) {
+    private void executeThreads(List<Thread> threads) {
         for (Thread thread : threads) {
             thread.start();
         }
