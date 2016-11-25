@@ -25,6 +25,20 @@ public enum PropertiesName {
         public String toString() {
             return "convertImages";
         }
+    },
+    
+    CHAPTERS {
+        @Override
+        public String toString() {
+            return "Chapters";
+        }
+    },
+    
+    FAV_PROJECTS {
+        @Override
+        public String toString() {
+            return "FavProjects";
+        }
     };
     
     @Override

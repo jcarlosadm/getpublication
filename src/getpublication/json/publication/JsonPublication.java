@@ -1,8 +1,14 @@
 package getpublication.json.publication;
 
 import java.io.File;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import getpublication.json.JsonBasicOperations;
@@ -174,13 +180,29 @@ public abstract class JsonPublication extends JsonBasicOperations {
      * @return set of all projects
      */
     @SuppressWarnings("unchecked")
-    public Set<String> getProjects() {
+    public List<String> getProjects() {
         JSONObject projects = this.getProjectsObj();
         if (projects == null) {
             return null;
         }
+        
+        List<String> list = new ArrayList<>(projects.keySet());
+        List<String> orderingList = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
+        
+        for (String projectName : list) {
+            orderingList.add(projectName.toLowerCase());
+            map.put(projectName.toLowerCase(), projectName);
+        }
+        
+        Collections.sort(orderingList);
+        list.clear();
+        
+        for (String string : orderingList) {
+            list.add(map.get(string));
+        }
 
-        return projects.keySet();
+        return list;
     }
 
     private JSONObject getProjectsObj() {
@@ -249,6 +271,126 @@ public abstract class JsonPublication extends JsonBasicOperations {
 
         return ((String) project
                 .get(PropertiesName.LAST_CHAPTER.toString()));
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void addChapter(String projectName, String chapter) {
+        if (!this.hasProject(projectName)) {
+            return;
+        }
+        
+        JSONObject projectObj = this.getProjectsObj();
+        JSONObject project = (JSONObject) projectObj.get(projectName);
+        
+        JSONArray jsonArray = null;
+        
+        if (project.containsKey(PropertiesName.CHAPTERS.toString())) {
+            jsonArray = (JSONArray) project.get(PropertiesName.CHAPTERS.toString());
+        } else {
+            jsonArray = new JSONArray();
+        }
+        
+        jsonArray.add(chapter);
+        project.put(PropertiesName.CHAPTERS.toString(), jsonArray);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void replaceChapters(String projectName, List<String> chapters) {
+        if (!this.hasProject(projectName)) {
+            return;
+        }
+        
+        JSONObject projectObj = this.getProjectsObj();
+        JSONObject project = (JSONObject) projectObj.get(projectName);
+        
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.addAll(chapters);
+        
+        project.put(PropertiesName.CHAPTERS.toString(), jsonArray);
+    }
+    
+    
+    public List<String> getChapters(String projectName) {
+        if (!this.hasProject(projectName)) {
+            return null;
+        }
+        
+        List<String> list = new ArrayList<>();
+
+        JSONObject projectObj = this.getProjectsObj();
+        JSONObject project = (JSONObject) projectObj.get(projectName);
+        
+        if (!project.containsKey(PropertiesName.CHAPTERS.toString())) {
+            return list;
+        }
+        
+        JSONArray jsonArray = (JSONArray) project.get(PropertiesName.CHAPTERS.toString());
+        @SuppressWarnings("unchecked")
+        Iterator<String> iterator = jsonArray.iterator();
+        
+        while(iterator.hasNext()) {
+            list.add((String)iterator.next());
+        }
+        
+        return list;
+    }
+    
+    public void addFavProject(String projectName) {
+        this.modFavProject(projectName, true);
+    }
+    
+    public void removeFavProject(String projectName) {
+        this.modFavProject(projectName, false);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void modFavProject(String projectName, boolean add) {
+        if (!this.hasProject(projectName)) {
+            return;
+        }
+        
+        JSONObject jsonObject = this.getJsonObject();
+        JSONArray jsonArray = null;
+        if (!jsonObject.containsKey(PropertiesName.FAV_PROJECTS.toString())) {
+            jsonArray = new JSONArray();
+        } else {
+            jsonArray = (JSONArray) jsonObject.get(PropertiesName.FAV_PROJECTS.toString());
+        }
+        
+        if (!jsonArray.contains(projectName) && add == true) {
+            jsonArray.add(projectName);
+        } else if(jsonArray.contains(projectName) && add == false) {
+            jsonArray.remove(projectName);
+        }
+        
+        jsonObject.put(PropertiesName.FAV_PROJECTS.toString(), jsonArray);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<String> getFavProjects() {
+        List<String> favProjects = new ArrayList<>();
+        
+        JSONObject jsonObject = this.getJsonObject();
+        if (jsonObject.containsKey(PropertiesName.FAV_PROJECTS.toString())) {
+            JSONArray jsonArray = (JSONArray) jsonObject.get(PropertiesName.FAV_PROJECTS.toString());
+            
+            favProjects.addAll(jsonArray);
+        }
+        
+        List<String> tempList = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
+        for (String string : favProjects) {
+            tempList.add(string.toLowerCase());
+            map.put(string.toLowerCase(), string);
+        }
+        
+        Collections.sort(tempList);
+        favProjects.clear();
+        for (String string : tempList) {
+            favProjects.add(map.get(string));
+        }
+        
+        return favProjects;
     }
 
     /**
