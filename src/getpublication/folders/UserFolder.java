@@ -12,6 +12,7 @@ public class UserFolder {
     private static final String MAIN_FOLDER = ".getpublications";
     private static final String PLUGIN_FOLDER = "plugins";
     private static final String LOG_FOLDER = "logs";
+    private static final String IMAGE_CACHE_FOLDER = "image_cache";
 
     public void createFolders() {
         this.createMainFolder();
@@ -19,8 +20,9 @@ public class UserFolder {
         this.createTempFolder();
         this.createPluginFolder();
         this.createLogFolder();
+        this.createImageCacheFolder();
     }
-    
+
     private void createLogFolder() {
         CreateFolder.create(new File(getPathToLogFolder()));
     }
@@ -35,6 +37,10 @@ public class UserFolder {
 
     private void createDBFolder() {
         CreateFolder.create(new File(getPathToDbFolder()));
+    }
+    
+    private void createImageCacheFolder() {
+        CreateFolder.create(new File(getPathToImageCacheFolder()));
     }
 
     private void createMainFolder() {
@@ -60,5 +66,9 @@ public class UserFolder {
     
     public static String getPathToPluginFolder(){
         return (getPathToMainFolder() + File.separator + PLUGIN_FOLDER);
+    }
+    
+    public static String getPathToImageCacheFolder() {
+        return (getPathToMainFolder() + File.separator + IMAGE_CACHE_FOLDER);
     }
 }
