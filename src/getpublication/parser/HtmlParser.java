@@ -31,8 +31,9 @@ public abstract class HtmlParser {
         }
 
         try {
-            this.doc = Jsoup.connect(this.urlSiteString).get();
+            this.doc = Jsoup.connect(this.urlSiteString).userAgent("Mozilla").get();
         } catch (IOException e) {
+        	e.printStackTrace();
             System.out.println("unable to connect to "+this.urlSiteString);
             this.doc = null;
             return false;
